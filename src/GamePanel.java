@@ -55,20 +55,47 @@ public class GamePanel extends JPanel implements ActionListener {
 	
 	public void draw(Graphics g) {
 		//drawing the worm
-		g.setColor(Color.orange);
-		g.fillOval(wormX, wormY, UNIT_SIZE, UNIT_SIZE);
-		
-		//drawing the snake
-		for (int i = 0; i < bodyParts; i++) {
-			if (i == 0) {
-				g.setColor(Color.green);
-				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-			}
-			else {
-				g.setColor(new Color(45, 180, 0));
-				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-			}
+		if (running) {
+			g.setColor(Color.orange);
+			g.fillOval(wormX, wormY, UNIT_SIZE, UNIT_SIZE);
 
+			//drawing the snake
+			if (wormsEaten <= 5) {
+				for (int i = 0; i < bodyParts; i++) {
+					if (i == 0) {
+						g.setColor(Color.green);
+						g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+					} else {
+						g.setColor(new Color(45, 180, 0));
+						g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+					}
+
+				}
+			}
+			if (wormsEaten > 5) {
+				for (int i = 0; i < bodyParts; i++) {
+					if (i == 0) {
+						g.setColor(Color.red);
+						g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+					} else {
+						g.setColor(new Color(128, 24, 24));
+						g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+					}
+
+				}
+			}
+			g.setColor(Color.CYAN);
+			g.setFont(new Font("Ink Free", Font.BOLD, 30));
+			FontMetrics metrics = getFontMetrics(g.getFont());
+			g.drawString("Score : " + wormsEaten, (SCREEN_WIDTH - metrics.stringWidth("Score : " + wormsEaten))/2, g.getFont().getSize());
+			if (wormsEaten > 5) {
+				g.setColor(Color.green);
+				g.setFont(new Font("Ink Free", Font.BOLD, 30));
+				metrics = getFontMetrics(g.getFont());
+				g.drawString("Score : " + wormsEaten, (SCREEN_WIDTH - metrics.stringWidth("Score : " + wormsEaten))/2, g.getFont().getSize());
+			}
+		} else {
+			gameOver(g);
 		}
 	}
 	
@@ -136,7 +163,10 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 	
 	public void gameOver(Graphics g) {
-		
+		g.setColor(Color.CYAN);
+		g.setFont(new Font("Ink Free", Font.BOLD, 75));
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("Game Over", (SCREEN_WIDTH - metrics.stringWidth("Game Over"))/2, SCREEN_HEIGHT/2);
 	}
 	
 	@Override
